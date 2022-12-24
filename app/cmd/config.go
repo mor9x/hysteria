@@ -70,6 +70,11 @@ type serverConfig struct {
 		User     string `json:"user"`
 		Password string `json:"password"`
 	} `json:"socks5_outbound"`
+	SOCKS5Hijack struct {
+		Server   string `json:"server"`
+		User     string `json:"user"`
+		Password string `json:"password"`
+	} `json:"socks5_hijack"`
 	BindOutbound struct {
 		Address string `json:"address"`
 		Device  string `json:"device"`

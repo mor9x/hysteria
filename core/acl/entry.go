@@ -20,6 +20,7 @@ const (
 	ActionProxy
 	ActionBlock
 	ActionHijack
+	ActionHijackSocks
 )
 
 const (
@@ -182,6 +183,8 @@ func ParseEntry(s string) (Entry, error) {
 		e.Action = ActionHijack
 		e.ActionArg = conds[len(conds)-1]
 		conds = conds[:len(conds)-1]
+	case "hijacksocks":
+		e.Action = ActionHijackSocks
 	default:
 		return Entry{}, fmt.Errorf("invalid action %s", fields[0])
 	}

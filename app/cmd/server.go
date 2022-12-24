@@ -152,6 +152,11 @@ func server(config *serverConfig) {
 		transport.DefaultServerTransport.SOCKS5Client = transport.NewSOCKS5Client(config.SOCKS5Outbound.Server,
 			config.SOCKS5Outbound.User, config.SOCKS5Outbound.Password)
 	}
+	// SOCK5 hijack
+	if config.SOCKS5Hijack.Server != "" {
+		transport.DefaultServerTransport.HijackSOCKS5Client = transport.NewSOCKS5Client(config.SOCKS5Hijack.Server,
+			config.SOCKS5Hijack.User, config.SOCKS5Hijack.Password)
+	}
 	// Bind outbound
 	if config.BindOutbound.Device != "" {
 		iface, err := net.InterfaceByName(config.BindOutbound.Device)
@@ -291,6 +296,8 @@ func actionToString(action acl.Action, arg string) string {
 		return "Block"
 	case acl.ActionHijack:
 		return "Hijack to " + arg
+	case acl.ActionHijackSocks:
+		return "Hijack(Socks) to " + arg
 	default:
 		return "Unknown"
 	}

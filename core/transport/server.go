@@ -10,11 +10,12 @@ import (
 )
 
 type ServerTransport struct {
-	Dialer            *net.Dialer
-	SOCKS5Client      *SOCKS5Client
-	ResolvePreference ResolvePreference
-	LocalUDPAddr      *net.UDPAddr
-	LocalUDPIntf      *net.Interface
+	Dialer             *net.Dialer
+	SOCKS5Client       *SOCKS5Client
+	HijackSOCKS5Client *SOCKS5Client
+	ResolvePreference  ResolvePreference
+	LocalUDPAddr       *net.UDPAddr
+	LocalUDPIntf       *net.Interface
 }
 
 // AddrEx is like net.TCPAddr or net.UDPAddr, but with additional domain information for SOCKS5.

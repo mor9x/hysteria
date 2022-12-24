@@ -260,6 +260,30 @@ func (c *serverClient) handleTCP(stream quic.Stream, host string, port uint16) {
 			c.CTCPErrorFunc(c.ClientAddr(), c.Auth, addrStr, err)
 			return
 		}
+	case acl.ActionHijackSocks:
+		addrEx := &transport.AddrEx{
+			IPAddr: ipAddr,
+			Port:   int(port),
+		}
+		if isDomain {
+			addrEx.Domain = host
+		}
+		if c.Transport.HijackSOCKS5Client == nil {
+			_ = struc.Pack(stream, &serverResponse{
+				OK:      false,
+				Message: "socks5 is not configured",
+			})
+			return
+		}
+		conn, err = c.Transport.HijackSOCKS5Client.DialTCP(addrEx)
+		if err != nil {
+			_ = struc.Pack(stream, &serverResponse{
+				OK:      false,
+				Message: err.Error(),
+			})
+			c.CTCPErrorFunc(c.ClientAddr(), c.Auth, addrStr, err)
+			return
+		}
 	default:
 		_ = struc.Pack(stream, &serverResponse{
 			OK:      false,
